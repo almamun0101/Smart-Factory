@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const router = useRouter()
-  useEffect(() => { router.replace('/dashboard/machines') }, [router])
+  useEffect(() => { router.replace('/login') }, [router])
 
   return (
     <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', background:'var(--bg)' }}>
