@@ -1,0 +1,53 @@
+rules_version = '2';
+
+// This system has a single operator/admin role: anyone who can sign in
+// (accounts are created manually in the Firebase console) has full access.
+// If you later add multiple staff logins with different permission levels,
+// replace `isSignedIn()` below with role checks against a `users/{uid}` doc.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    match /workers/{workerId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /machines/{machineId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /products/{productId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /production_logs/{logId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /orders/{orderId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /expenses/{expenseId} {
+      allow read, write: if isSignedIn();
+    }
+
+    match /app_config/{docId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Used by the in-app connection diagnostics panel to verify reads/writes
+    // are actually working — not real production data.
+    match /_diagnostics/{docId} {
+      allow read, write: if isSignedIn();
+    }
+
+    // Deny everything else by default.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

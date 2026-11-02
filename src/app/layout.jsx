@@ -1,27 +1,42 @@
-// ─── Root Layout (Server Component) ──────────────────────────────────────────
-// This file MUST be a Server Component (no 'use client') so Next.js can
-// export `metadata`. Client providers are moved to Providers.jsx.
-
-import './globals.css'
-import { Providers } from './Providers'
-
-export const metadata = {
-  title: 'FactoryBill — Energy Manager',
-  description: 'Machine billing & electricity management for factories',
-}
-
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-}
-
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body>
-        <Providers>{children}</Providers>
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Toaster } from "sonner";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { SettingsProvider } from "@/contexts/SettingsContext";
+import "./globals.css";
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+  display: "swap"
+});
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap"
+});
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap"
+});
+const metadata = {
+  title: "Factory Production Management System",
+  description: "Track daily production, machines, workers, and billing on the factory floor."
+};
+function RootLayout({ children }) {
+  return <html lang="en" suppressHydrationWarning>
+      <body
+    className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} font-body antialiased`}
+  >
+        <AuthProvider>
+          <SettingsProvider>
+            {children}
+            <Toaster richColors position="top-right" />
+          </SettingsProvider>
+        </AuthProvider>
       </body>
-    </html>
-  )
+    </html>;
 }
+export {
+  RootLayout as default,
+  metadata
+};
